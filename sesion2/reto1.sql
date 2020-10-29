@@ -1,0 +1,10 @@
+USE tienda;
+SHOW TABLES;
+DESCRIBE articulo;
+SELECT * FROM articulo;
+SELECT nombre FROM articulo WHERE nombre LIKE "%pasta%";
+SELECT nombre FROM articulo WHERE nombre LIKE "%cannelloni%";
+SELECT nombre FROM articulo WHERE nombre LIKE "%-%";
+DESCRIBE puesto;
+SELECT nombre FROM puesto WHERE nombre LIKE "%designer%";
+SELECT nombre FROM puesto WHERE nombre LIKE "%developer%";
