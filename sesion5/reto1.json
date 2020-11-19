@@ -1,0 +1,23 @@
+{
+    "Sin fiesta": {
+        "house_rules": {
+            $in: [/No Parties/i]
+        }
+    },
+    "Mascotas permitidas": {
+        "house_rules": {
+            $in: [/Pets Allowed/i]
+        }
+    },
+    "No fumadores": {
+        "house_rules": {
+            $in: [/No Smoking/i]
+        }
+    },
+    "Ni fiestas ni fumadores": {
+        "house_rules": {
+            $in: [/No Smoking|No parties/i]
+        }
+    }
+    
+}
