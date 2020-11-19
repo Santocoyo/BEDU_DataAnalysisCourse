@@ -1,0 +1,36 @@
+[
+    {
+        "$match": {
+            "property_type": "House", 
+            "bedrooms": {
+                "$gte": 1
+            }
+        }
+    },
+    {
+        "$project": {
+            "name": 1, 
+            "bedrooms": 1, 
+            "_id": 0, 
+            "price": 1, 
+            "address.country": 1
+        }
+    },
+    {
+        "$addFields": {
+            "price_per_bedroom": {
+                "$divide": [
+                    "$price", "$bedrooms"
+                ]
+            }
+        }
+    },
+    {
+        "$group": {
+            "_id": "$address.country", 
+            "Average_bedroom_cost": {
+                "$avg": "$price_per_bedroom"
+            }
+        }
+    }
+]
