@@ -8,7 +8,7 @@
         "$match": {
             "amenities": {
                 "$in": [
-                    "Wifi", "Ethernet"
+                    /wifi/i, /ethernet/i, /internet/i
                 ]
             }
         }
