@@ -1,0 +1,67 @@
+[{"$group": {
+    "_id": "$Country",
+    "MuertesTotales": {
+      "$sum": "$Deaths"
+    },
+    "CasosTotales": {
+      "$sum": "$Cases"
+    }
+  }}, {"$sort": {
+    "MuertesTotales": -1
+  }}, {"$match": {
+    "_id": {"$nin": ["/Grand Total/i"]}
+  }},
+  {"$group": {
+    "_id": "$Country",
+    "MuertesTotales": {
+      "$sum": "$Deaths"
+    },
+    "CasosTotales": {
+      "$sum": "$Cases"
+    }
+  }}, {"$sort": {
+    "MuertesTotales": 1
+  }}, {"$match": {
+    "_id": {"$nin": ["/Grand Total/i"]},
+    "MuertesTotales": 0
+  }},
+  {"$group": {
+    "_id": "$Country",
+    "MuertesTotales": {
+      "$sum": "$Deaths"
+    },
+    "CasosTotales": {
+      "$sum": "$Cases"
+    }
+  }}, {"$sort": {
+    "CasosTotales": -1
+  }},
+  {"$group": {
+    "_id": "$Country",
+    "MuertesTotales": {
+      "$sum": "$Deaths"
+    },
+    "CasosTotales": {
+      "$sum": "$Cases"
+    }
+  }}, {"$sort": {
+    "CasosTotales": 1
+  }}, {"$match": {
+    "_id": {"$nin": ["/Grand Total/i"]},
+    "CasosTotales": 1
+  }},
+  {"$match": {
+    "Deaths": {"$nin": ["NaN"]},
+    "Cases": {"$nin": ["NaN"]}
+  }}, {"$group": {
+    "_id": "$Country",
+    "MuertesPromedio": {
+      "$avg": "$Deaths"
+    },
+    "CasosPromedio": {
+      "$avg": "$Cases"
+    }
+  }}, {"$sort": {
+    "MuertesPromedio": -1
+  }}
+]
