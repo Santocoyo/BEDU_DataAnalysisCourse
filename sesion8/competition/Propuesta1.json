@@ -1,0 +1,95 @@
+[
+    {
+        "$group": {
+            "_id": "$PLANT_ID", 
+            "DC_POWER_AVG": {
+                "$avg": "$DC_POWER"
+            }, 
+            "AC_POWER_AVG": {
+                "$avg": "$AC_POWER"
+            }, 
+            "DAILY_YIELD": {
+                "$avg": "$DAILY_YIELD"
+            }, 
+            "TOTAL_YIELD": {
+                "$avg": "$TOTAL_YIELD"
+            }, 
+            "SOURCE_KEYS": {
+                "$addToSet": "$SOURCE_KEY"
+            }
+        }
+    }, {
+        "$lookup": {
+            "from": "SensoresPropuesta1", 
+            "localField": "SOURCE_KEYS", 
+            "foreignField": "SOURCE_KEY", 
+            "as": "SENSORS"
+        }
+    }, {
+        "$addFields": {
+            "AMB_TEMP_AVG": {
+                "$avg": "$SENSORS.AMBIENT_TEMPERATURE"
+            }, 
+            "MOD_TEMP_AVG": {
+                "$avg": "$SENSORS.MODULE_TEMPERATURE"
+            }, 
+            "IRR_AVG": {
+                "$avg": "$SENSORS.IRRADIATION"
+            }, 
+            "POWER_CONVERSION": {
+                "$multiply": [
+                    100, {
+                        "$divide": [
+                            "$AC_POWER_AVG", "$DC_POWER_AVG"
+                        ]
+                    }
+                ]
+            }
+        }
+    }, {
+        "$addFields": {
+            "POWER_CONVERSION": {
+                "$multiply": [
+                    100, {
+                        "$divide": [
+                            "$AC_POWER_AVG", "$DC_POWER_AVG"
+                        ]
+                    }
+                ]
+            }, 
+            "DIFF_TEMPS": {
+                "$subtract": [
+                    "$MOD_TEMP_AVG", "$AMB_TEMP_AVG"
+                ]
+            }, 
+            "IRR_POWER_RATIO": {
+                "$multiply": [
+                    100, {
+                        "$divide": [
+                            "$IRR_AVG", "$POWER_CONVERSION"
+                        ]
+                    }
+                ]
+            }
+        }
+    }, {
+        "$group": {
+            "_id": null, 
+            "ALL_POWER_CONVERSION_AVG": {
+                "$avg": "$POWER_CONVERSION"
+            }, 
+            "DAILY_YIELD_AVG": {
+                "$avg": "$DAILY_YIELD"
+            }, 
+            "TOTAL_YIELD_AVG": {
+                "$avg": "$TOTAL_YIELD"
+            }, 
+            "ALL_DIFF_TEMP": {
+                "$avg": "$DIFF_TEMPS"
+            }, 
+            "IRR_POWER_ALL": {
+                "$avg": "$IRR_POWER_RATIO"
+            }
+        }
+    }
+]
